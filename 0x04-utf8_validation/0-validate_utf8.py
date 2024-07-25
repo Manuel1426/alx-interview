@@ -1,26 +1,31 @@
 #!/usr/bin/python3
-"""validUTF8"""
+"""
+Determines if a given data set represents a valid UTF-8 encoding.
+"""
 
 
 def validUTF8(data):
-        """method"""
-            nbytes = 0
+        """
+            Return: True if data is a valid UTF-8 encoding, else return False.
+                """
+                    num_bytes = 0
+                        for num in data:
+                                    bin_rep = format(num, '#010b')[-8:]
+                                            if num_bytes == 0:
+                                                            for bit in bin_rep:
+                                                                                if bit == '0':
+                                                                                                        break
+                                                                                                                    num_bytes += 1
 
-                byte1 = 1 << 7
-                    byte2 = 1 << 6
+                                                                                                                                if num_bytes == 0:
+                                                                                                                                                    continue
 
-                        for i in data:
-                                    m = 1 << 7
-                                            if nbytes == 0:
-                                                            while m & i:
-                                                                                nbytes += 1
-                                                                                                m = m >> 1
-                                                                                                            if nbytes == 0:
-                                                                                                                                continue
-                                                                                                                                        if nbytes == 1 or nbytes > 4:
-                                                                                                                                                            return False
-                                                                                                                                                                else:
-                                                                                                                                                                                if not (i & byte1 and not (i & byte2)):
-                                                                                                                                                                                                    return False
-                                                                                                                                                                                                        nbytes -= 1
-                                                                                                                                                                                                            return nbytes == 0
+                                                                                                                                                            if num_bytes == 1 or num_bytes > 4:
+                                                                                                                                                                                return False
+                                                                                                                                                                                    else:
+                                                                                                                                                                                                    if not (bin_rep[0] == '1' and bin_rep[1] == '0'):
+                                                                                                                                                                                                                        return False
+
+                                                                                                                                                                                                                            num_bytes -= 1
+
+                                                                                                                                                                                                                                return num_bytes == 0

@@ -1,31 +1,39 @@
 #!/usr/bin/python3
-"""
-Determines if a given data set represents a valid UTF-8 encoding.
-"""
+"""UTF-8 Validation"""
 
 
 def validUTF8(data):
-        """
-            Return: True if data is a valid UTF-8 encoding, else return False.
+        """Determines if a given data set
+            represents a valid utf-8 encoding
                 """
-                    num_bytes = 0
-                        for num in data:
-                                    bin_rep = format(num, '#010b')[-8:]
-                                            if num_bytes == 0:
-                                                            for bit in bin_rep:
-                                                                                if bit == '0':
-                                                                                                        break
-                                                                                                                    num_bytes += 1
+                    number_bytes = 0
 
-                                                                                                                                if num_bytes == 0:
-                                                                                                                                                    continue
+                        mask_1 = 1 << 7
+                            mask_2 = 1 << 6
 
-                                                                                                                                                            if num_bytes == 1 or num_bytes > 4:
-                                                                                                                                                                                return False
-                                                                                                                                                                                    else:
-                                                                                                                                                                                                    if not (bin_rep[0] == '1' and bin_rep[1] == '0'):
-                                                                                                                                                                                                                        return False
+                                for i in data:
 
-                                                                                                                                                                                                                            num_bytes -= 1
+                                            mask_byte = 1 << 7
 
-                                                                                                                                                                                                                                return num_bytes == 0
+                                                    if number_bytes == 0:
+
+                                                                    while mask_byte & i:
+                                                                                        number_bytes += 1
+                                                                                                        mask_byte = mask_byte >> 1
+
+                                                                                                                    if number_bytes == 0:
+                                                                                                                                        continue
+
+                                                                                                                                                if number_bytes == 1 or number_bytes > 4:
+                                                                                                                                                                    return False
+
+                                                                                                                                                                        else:
+                                                                                                                                                                                        if not (i & mask_1 and not (i & mask_2)):
+                                                                                                                                                                                                            return False
+
+                                                                                                                                                                                                                number_bytes -= 1
+
+                                                                                                                                                                                                                    if number_bytes == 0:
+                                                                                                                                                                                                                                return True
+
+                                                                                                                                                                                                                                return False
